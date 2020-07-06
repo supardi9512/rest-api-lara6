@@ -6,13 +6,16 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\Post\PostResource;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Post\PostCollection;
 
 class PostController extends Controller
 {
     public function index()
     {
         $data = Post::all();
-        return response()->json($data, 200);
+
+        return new PostCollection($data);
+        // return response()->json($data, 200);
     }
 
     public function show($id)
