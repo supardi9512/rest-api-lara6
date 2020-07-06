@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -22,13 +23,24 @@ class PostController extends Controller
                 'message' => 'Resource not found!'
             ], 404);
         }
-        
+
         return response()->json($data, 200);
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'title' => ['required', 'min:5']
+        ]);
+        
+        if($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ], 400);
+        }
+
         $response = Post::create($data);
         return response()->json($response, 201);
     }
