@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Resources\Post\PostResource;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -24,7 +25,8 @@ class PostController extends Controller
             ], 404);
         }
 
-        return response()->json($data, 200);
+        return new PostResource($data);
+        // return response()->json($data, 200);
     }
 
     public function store(Request $request)
